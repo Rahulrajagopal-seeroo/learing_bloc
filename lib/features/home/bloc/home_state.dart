@@ -21,12 +21,3 @@ class HomeError extends HomeState {
   final String message;
   HomeError({required this.message});
 }
-
-// lib/features/home/models/payment_data.dart
-class PaymentData {
-  final String month;
-  final double collectedAmount;
-  final double pendingAmount;
-
-  PaymentData(this.month, this.collectedAmount, this.pendingAmount);
-}
