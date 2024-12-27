@@ -11,33 +11,24 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => HomeBloc()..add(LoadHomeData()),
-      child: const Home(),
-    );
-  }
-}
+      child: Scaffold(
+        body: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            if (state is HomeInitial || state is HomeLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+            if (state is HomeError) {
+              return Center(child: Text(state.message));
+            }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
-          if (state is HomeInitial || state is HomeLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+            if (state is HomeLoaded) {
+              return HomeView(state: state);
+            }
 
-          if (state is HomeError) {
-            return Center(child: Text(state.message));
-          }
-
-          if (state is HomeLoaded) {
-            return HomeView(state: state);
-          }
-
-          return const SizedBox();
-        },
+            return const SizedBox();
+          },
+        ),
       ),
     );
   }
