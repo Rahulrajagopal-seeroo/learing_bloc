@@ -4,9 +4,20 @@ import 'package:rahul_bloc_login/features/home/widgets/home_view.dart';
 
 import '../bloc/home_bloc.dart';
 
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => HomeBloc()..add(LoadHomeData()),
+      child: const Home(),
+    );
+  }
+}
+
+class Home extends StatelessWidget {
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +27,11 @@ class HomeScreen extends StatelessWidget {
           if (state is HomeInitial || state is HomeLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-          
+
           if (state is HomeError) {
             return Center(child: Text(state.message));
           }
-          
+
           if (state is HomeLoaded) {
             return HomeView(state: state);
           }
